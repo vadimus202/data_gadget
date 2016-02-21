@@ -4,7 +4,7 @@ library(magrittr)
 library(dplyr)
 library(DT)
 
-options(DT.options = list(pageLength = 20), dom = 'tfip')
+options(DT.options = list(pageLength = 10), dom = 'tfip')
 
 source('code/01a_get_data_frame.R')
 source('code/01b_helper_functions.R')

@@ -15,14 +15,20 @@ ui <-
                              ),
                              flex = c(3, 2), width = "100%", height = "100%"),
                          miniButtonBlock(
-                             actionButton("Trans", "Transform")
+                             actionButton("test1", "Test 1"),
+                             actionButton("test2", "Test 2")
                          )
                          
             ),
             
             # Text Variables Tab
-            miniTabPanel("Character", icon = icon("sort-alpha-asc"),
+            miniTabPanel("Text", icon = icon("book"),
                          DT::dataTableOutput("table_char")
+            ),
+            
+            # Factor Variables Tab
+            miniTabPanel("Factor", icon = icon("tags"),
+                         DT::dataTableOutput("table_fctr")
             )
             
         ) # end strip
