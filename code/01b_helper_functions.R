@@ -1,8 +1,19 @@
 
-stopifnot(!is.null(df))
+stopifnot(!is.null(df_raw))
 
-df_meta <- 
-    function()
+
+get_df_num <- 
+    function(df) df[, sapply(df, is.numeric), drop=F]
+
+get_df_char <- 
+    function(df) df[, sapply(df, is.character), drop=F]
+
+get_df_fctr <- 
+    function(df) df[, sapply(df, is.factor), drop=F]
+
+
+get_meta <- 
+    function(df)
         data_frame(
             var = names(df),
             class = sapply(df,class),
@@ -10,10 +21,11 @@ df_meta <-
         )
 
 
-df_meta_num <- 
-    function(){
+get_meta_num <- 
+    function(df){
         df <- 
-            df[, sapply(df, is.numeric)]
+            get_df_num(df)
+        
         data_frame(
             Name = names(df),
             Class = sapply(df,class) %>% substr(1,1),
@@ -25,15 +37,32 @@ df_meta_num <-
         )
     }
 
-df_meta_char <- 
-    function(){
+get_meta_char <- 
+    function(df){
         df <- 
-            df[, sapply(df, is.character), drop=F]
+            get_df_char(df)
+        
         data_frame(
-            variable = names(df),
-            example = sapply(df, function(x) table(x, useNA = 'no') %>% sort(decreasing = T) %>% .[1] %>% names),
+            Variable = names(df),
+            Example = sapply(df, function(x) table(x, useNA = 'no') %>% sort(decreasing = T) %>% .[1] %>% names),
             NAs = sapply(df, function(x) sum(is.na(x))),
-            unique = sapply(df, function(x) length(unique(x))),
-            range = sapply(df, function(x) x %>% nchar %>% range %>% paste(collapse = ' - '))
+            Unique = sapply(df, function(x) length(unique(x))),
+            Length = sapply(df, function(x) x %>% nchar %>% range %>% paste(collapse = ' - '))
         )
     }
+
+
+get_meta_fctr <- 
+    function(df){
+        df <- 
+            get_df_fctr(df)
+        
+        data_frame(
+            Variable = names(df),
+            Levels = sapply(df, function(x) length(unique(x))),
+            'Most Freq' = sapply(df, function(x) table(x, useNA = 'no') %>% sort(decreasing = T) %>% .[1] %>% names),
+            NAs = sapply(df, function(x) sum(is.na(x))),
+            Ordered = sapply(df, function(x) ifelse(x %>% is.ordered,'Y',NA))
+        )
+    }
+
